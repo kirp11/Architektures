@@ -15,15 +15,6 @@ main_root.resizable(True, True)
 currency = ["USD", "RUB", "EUR", "GBP"]
 courses = [90,1,100,150]
 
-def selected_1(event):
-    # val_1 = courses[currency.index(text2.get())]
-    # amount_currency_2 = float(entry_currency2.get())
-    # val_1 = courses[currency.index(text1.get())]
-    # amount_currency_1 = ((val_2 * amount_currency_2) / val_1)
-    # text_entry1.set(str(amount_currency_1))
-    # entry_currency1.configure(textvariable=text_entry1)
-    pass
-
 def create_window():
     global X_window
     X_window += 200
@@ -60,7 +51,6 @@ text1 = StringVar()
 
 combobox1 = ttk.Combobox(textvariable=text1, values=currency, state="readonly")
 combobox1.place(anchor=NE, x=530, y= 70, height=30)
-combobox1.bind("<<ComboboxSelected>>",selected_1)
 
 
 main_root.mainloop()
