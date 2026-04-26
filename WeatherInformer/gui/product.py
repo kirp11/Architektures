@@ -2,6 +2,7 @@ import tkinter as tk
 from abc import ABC, abstractmethod
 from tkinter import *
 from tkinter import ttk
+import json
 
 class AButton(ABC):
     def __init__(self, command):
@@ -24,7 +25,12 @@ class AWindow(ABC):
 
 class ACombobox(ABC):
     def __init__(self, current_var):
-        self.cities = ["USD", "RUB", "EUR", "GBP"]
+        self.cities = []
+        with open('russian-cities.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        for i in data:
+            self.cities.append(i["name"])
+
         self.current_var = current_var
     def draw(self): raise NotImplemented
 
