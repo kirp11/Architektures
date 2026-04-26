@@ -44,7 +44,3 @@ class MyAPI:
             self.wind = city_data['fact']["wind_speed"]
         else:
             raise Exception(f"Fail retrieve weather data: {response.status_code} {response.text}")
-
-# api = MyAPI()
-# api.get_coord('Яхрома')
-# api.get_weather(api_key, 56.28333, 37.48333)
