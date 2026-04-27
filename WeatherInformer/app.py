@@ -5,7 +5,7 @@ from gui.factories import AWidgetFactory
 
 class App:
 
-    def __init__(self, gui_factory: AWidgetFactory):
+    def __init__(self, gui_factory: AWidgetFactory = None):
         self.gui_factory = gui_factory
 
     def draw_ui(self):

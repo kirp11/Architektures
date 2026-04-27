@@ -4,7 +4,10 @@ from abc import ABC, abstractmethod
 from tkinter import *
 from tkinter import ttk
 import json
+
 from WeatherInformer.api import MyAPI
+
+
 
 class AButton(ABC):
     def __init__(self, command):
@@ -18,7 +21,6 @@ class AWindow(ABC):
         self.current_var = tk.StringVar()
         self.X_window = 140
         self.width_main_window = 700
-
 
 
     def draw_main(self): raise NotImplemented
@@ -39,8 +41,9 @@ class ACombobox(ABC):
 # _________________________________________________________________________________________________
 
 class WhiteWindow(AWindow):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__()
+        self.parent = parent
         self.current_vari = tk.StringVar()
         self.button = WhiteButton(self.draw_other)
         self.combo = WhiteCombobox(self.current_vari)
@@ -55,12 +58,22 @@ class WhiteWindow(AWindow):
 
         label_name = ttk.Label(text="Погодный информер", font=("Arial", 18), foreground="black", background="yellow")
         label_name.place(x=30, y=30, anchor=W)
+        label_theme = ttk.Label(text="Тема", font=("Arial", 18), foreground="black", background="yellow")
+        label_theme.place(x=430, y=30, anchor=W)
 
         label_name2 = ttk.Label(text="Выбрать и добавить из списка городов:", font=("Arial", 14), foreground="black", background="yellow")
         label_name2.place(x=30, y=80, anchor=W)
+        light_button = Button( text="Светлая", command=lambda: self.parent.switch_factory(), bg="white")
+        light_button.place(anchor=NW, x=530, y=20, height=30)
+        dark_button = Button(text="Темная", command=lambda: self.parent.switch_factory(), bg="grey")
+        dark_button.place(anchor=NW, x=610, y=20, height=30)
         self.button.draw()
         self.combo.draw()
         self.main_root.mainloop()
+
+    # def switch_theme(self, window):
+    #     window.switch_factory()
+
 
     def draw_other(self):
         self.X_window += 200
@@ -100,8 +113,9 @@ class WhiteWindow(AWindow):
             self.main_root.mainloop()
 
 class BlueWindow(AWindow):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__()
+        self.parent = parent
         self.current_vari = tk.StringVar()
         self.button = BlueButton(self.draw_other)
         self.combo = BlueCombobox(self.current_vari)
@@ -119,9 +133,16 @@ class BlueWindow(AWindow):
 
         label_name2 = ttk.Label(text="Выбрать и добавить из списка городов:", font=("Arial", 14), foreground="black", background="blue")
         label_name2.place(x=30, y=80, anchor=W)
+        light_button = Button(text="Светлая", command=lambda: self.parent.switch_factory(), bg="white")
+        light_button.place(anchor=NW, x=530, y=20, height=30)
+        dark_button = Button(text="Темная", command=lambda: self.parent.switch_factory(), bg="grey")
+        dark_button.place(anchor=NW, x=610, y=20, height=30)
         self.button.draw()
         self.combo.draw()
         self.main_root.mainloop()
+
+    # def switch_theme(self, window):
+    #     window.switch_factory()
 
     def draw_other(self):
         self.X_window += 200
@@ -172,6 +193,7 @@ class WhiteButton(AButton):
     def draw(self):
         choose_button = Button(text="Добавить", command=self.command, bg="red")
         choose_button.place(anchor=NW, x=530, y=70, height=30)
+
 
 class BlueButton(AButton):
     def draw(self):
