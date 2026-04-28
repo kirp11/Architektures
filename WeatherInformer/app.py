@@ -12,6 +12,7 @@ class App:
     def draw_ui(self):
         self.gui_factory.create_window()
 
+
     def switch_factory(self, new_gui_factory, color):
         if color:
             col = self.factories.get(color)

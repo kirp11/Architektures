@@ -17,15 +17,12 @@ class AWindow(ABC):
     def __init__(self, parent, root=Tk()):
         self.parent = parent
         self.main_root = root
-        self.main_root.title("InfoWeather")
         self.current_var = tk.StringVar()
         self.X_window = 140
-        self.width_main_window = 700
 
 
-    def draw_main(self): raise NotImplemented
+    def draw(self): raise NotImplemented
 
-    def draw_other(self): raise NotImplemented
 
 class ACombobox(ABC):
     def __init__(self, current_var):
@@ -40,15 +37,16 @@ class ACombobox(ABC):
 
 # _________________________________________________________________________________________________
 
-class WhiteWindow(AWindow):
+class WhiteMainWindow(AWindow):
     def __init__(self, parent):
         super().__init__(parent)
-        self.current_vari = tk.StringVar()
-        self.button = WhiteButton(self.draw_other)
-        self.combo = WhiteCombobox(self.current_vari)
+        self.button = WhiteButton(self.create_small_window)
+        self.combo = WhiteCombobox(self.current_var)
+        self.width_main_window = 700
+        self.main_root.title("InfoWeather")
 
 
-    def draw_main(self):
+    def draw(self):
         size_window = str(f"{self.width_main_window}x400+300+180")
 
         self.main_root.geometry(size_window)
@@ -73,35 +71,11 @@ class WhiteWindow(AWindow):
     def switch_theme(self, window, color):
         window.switch_factory(new_gui_factory=None, color=color)
 
-
-    def draw_other(self):
-        self.X_window += 200
-        root = tk.Toplevel(master=self.main_root, background='blue')
-        root.title(self.current_vari.get())
-        size = str(f"200x200+{self.X_window}+310")
-        root.geometry(size)
-        root.resizable(True, True)
-
-        datas = MyAPI(self.current_vari.get())
-
-        label_city = ttk.Label(master=root, text=f"Город: ", font=("Arial", 10), foreground="black", background="yellow")
-        label_city.place(x=20, y=20, anchor=W)
-        label_name = ttk.Label(master=root, text=self.current_vari.get(), font=("Arial", 10), foreground="black", background="yellow")
-        label_name.place(x=180, y=20, anchor=E)
-        label_temperature = ttk.Label(master=root, text=f"Температура: {datas.temp} ^C", font=("Arial", 10), foreground="black", background="yellow")
-        label_temperature.place(x=20, y=50, anchor=W)
-        label_humidity = ttk.Label(master=root, text=f"Влажность: {datas.hum} %", font=("Arial", 10), foreground="black",
-                                      background="yellow")
-        label_humidity.place(x=20, y=80, anchor=W)
-        label_pressure = ttk.Label(master=root, text=f"Давление: {datas.press} мм.рт.ст", font=("Arial", 10), foreground="black",
-                                      background="yellow")
-        label_pressure.place(x=20, y=110, anchor=W)
-        label_windSpeed = ttk.Label(master=root, text=f"Скорость ветра: {datas.wind} м/с", font=("Arial", 10), foreground="black",
-                                      background="yellow")
-        label_windSpeed.place(x=20, y=140, anchor=W)
-        update_button = Button(master=root, text="Обновить", command="", bg="green")
-        update_button.place(anchor=CENTER, x=100, y=180, height=30)
+    def create_small_window(self):
+        window = WhiteSmallWindow(self)
+        window.draw()
         self.change_main_window()
+
 
     def change_main_window(self):
 
@@ -109,17 +83,16 @@ class WhiteWindow(AWindow):
             self.width_main_window +=200
             new_main_size = str(f"{self.width_main_window}x400+300+180")
             self.main_root.geometry(new_main_size)
-            self.main_root.mainloop()
 
-class BlueWindow(AWindow):
+class BlueMainWindow(AWindow):
     def __init__(self, parent):
         super().__init__(parent)
-        self.current_vari = tk.StringVar()
-        self.button = BlueButton(self.draw_other)
-        self.combo = BlueCombobox(self.current_vari)
+        self.button = BlueButton(self.create_small_window)
+        self.combo = BlueCombobox(self.current_var)
+        self.width_main_window = 800
 
 
-    def draw_main(self):
+    def draw(self):
         size_window = str(f"{self.width_main_window}x400+300+180")
 
         self.main_root.geometry(size_window)
@@ -142,38 +115,9 @@ class BlueWindow(AWindow):
     def switch_theme(self, window, color):
         window.switch_factory(new_gui_factory=None, color=color)
 
-    def draw_other(self):
-        self.X_window += 200
-        root = tk.Toplevel(master=self.main_root, background='white')
-        root.title(self.current_vari.get())
-        size = str(f"200x200+{self.X_window}+310")
-        root.geometry(size)
-        root.resizable(True, True)
-        datas = MyAPI(self.current_vari.get())
-
-        label_city = ttk.Label(master=root, text=f"Город: ", font=("Arial", 10), foreground="black",
-                               background="blue")
-        label_city.place(x=20, y=20, anchor=W)
-        label_name = ttk.Label(master=root, text=self.current_vari.get(), font=("Arial", 10), foreground="black",
-                               background="blue")
-        label_name.place(x=180, y=20, anchor=E)
-        label_temperature = ttk.Label(master=root, text=f"Температура: {datas.temp} ^C", font=("Arial", 10),
-                                      foreground="black", background="blue")
-        label_temperature.place(x=20, y=50, anchor=W)
-        label_humidity = ttk.Label(master=root, text=f"Влажность: {datas.hum} %", font=("Arial", 10),
-                                   foreground="black",
-                                   background="blue")
-        label_humidity.place(x=20, y=80, anchor=W)
-        label_pressure = ttk.Label(master=root, text=f"Давление: {datas.press} мм.рт.ст", font=("Arial", 10),
-                                   foreground="black",
-                                   background="blue")
-        label_pressure.place(x=20, y=110, anchor=W)
-        label_windSpeed = ttk.Label(master=root, text=f"Скорость ветра: {datas.wind} м/с", font=("Arial", 10),
-                                    foreground="black",
-                                    background="blue")
-        label_windSpeed.place(x=20, y=140, anchor=W)
-        update_button = Button(master=root, text="Обновить", command="", bg="blue")
-        update_button.place(anchor=CENTER, x=100, y=180, height=30)
+    def create_small_window(self):
+        window = BlueSmallWindow(self)
+        window.draw()
         self.change_main_window()
 
     def change_main_window(self):
@@ -182,7 +126,83 @@ class BlueWindow(AWindow):
             self.width_main_window +=200
             new_main_size = str(f"{self.width_main_window}x400+300+180")
             self.main_root.geometry(new_main_size)
-            self.main_root.mainloop()
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+class WhiteSmallWindow(AWindow):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+    def draw(self):
+        self.parent.X_window += 200
+
+        root = tk.Toplevel(master=self.main_root, background='white')
+        root.title(self.parent.current_var.get())
+
+        size = str(f"200x200+{self.parent.X_window}+310")
+        root.geometry(size)
+        root.resizable(True, True)
+
+        datas = MyAPI(self.parent.current_var.get())
+
+        label_city = ttk.Label(master=root, text=f"Город: ", font=("Arial", 10), foreground="black", background="yellow")
+        label_city.place(x=20, y=20, anchor=W)
+        label_name = ttk.Label(master=root, text=self.parent.current_var.get(), font=("Arial", 10), foreground="black", background="yellow")
+        label_name.place(x=180, y=20, anchor=E)
+        label_temperature = ttk.Label(master=root, text=f"Температура: {datas.temp} ^C", font=("Arial", 10), foreground="black", background="yellow")
+        label_temperature.place(x=20, y=50, anchor=W)
+        label_humidity = ttk.Label(master=root, text=f"Влажность: {datas.hum} %", font=("Arial", 10), foreground="black",
+                                      background="yellow")
+        label_humidity.place(x=20, y=80, anchor=W)
+        label_pressure = ttk.Label(master=root, text=f"Давление: {datas.press} мм.рт.ст", font=("Arial", 10), foreground="black",
+                                      background="yellow")
+        label_pressure.place(x=20, y=110, anchor=W)
+        label_windSpeed = ttk.Label(master=root, text=f"Скорость ветра: {datas.wind} м/с", font=("Arial", 10), foreground="black",
+                                      background="yellow")
+        label_windSpeed.place(x=20, y=140, anchor=W)
+        update_button = Button(master=root, text="Обновить", command="", bg="green")
+        update_button.place(anchor=CENTER, x=100, y=180, height=30)
+
+
+
+
+class BlueSmallWindow(AWindow):
+    def __init__(self, parent):
+        super().__init__(parent)
+        # self.X_window = self.parent.X_window
+
+    def draw(self):
+        self.parent.X_window += 200
+
+        root = tk.Toplevel(master=self.main_root, background='blue')
+        root.title(self.parent.current_var.get())
+
+        size = str(f"200x200+{self.parent.X_window}+310")
+        root.geometry(size)
+        root.resizable(True, True)
+
+        datas = MyAPI(self.parent.current_var.get())
+
+        label_city = ttk.Label(master=root, text=f"Город: ", font=("Arial", 10), foreground="black", background="white")
+        label_city.place(x=20, y=20, anchor=W)
+        label_name = ttk.Label(master=root, text=self.parent.current_var.get(), font=("Arial", 10), foreground="black", background="white")
+        label_name.place(x=180, y=20, anchor=E)
+        label_temperature = ttk.Label(master=root, text=f"Температура: {datas.temp} ^C", font=("Arial", 10), foreground="black", background="white")
+        label_temperature.place(x=20, y=50, anchor=W)
+        label_humidity = ttk.Label(master=root, text=f"Влажность: {datas.hum} %", font=("Arial", 10), foreground="black",
+                                      background="white")
+        label_humidity.place(x=20, y=80, anchor=W)
+        label_pressure = ttk.Label(master=root, text=f"Давление: {datas.press} мм.рт.ст", font=("Arial", 10), foreground="black",
+                                      background="white")
+        label_pressure.place(x=20, y=110, anchor=W)
+        label_windSpeed = ttk.Label(master=root, text=f"Скорость ветра: {datas.wind} м/с", font=("Arial", 10), foreground="black",
+                                      background="white")
+        label_windSpeed.place(x=20, y=140, anchor=W)
+        update_button = Button(master=root, text="Обновить", command="", bg="yellow")
+        update_button.place(anchor=CENTER, x=100, y=180, height=30)
+
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -25,7 +25,7 @@ class WhiteWidgetFactory(AWidgetFactory):
         return WhiteButton().draw()
 
     def create_window(self):
-        WhiteWindow(self.parent).draw_main()
+        WhiteMainWindow(self.parent).draw()
 
     def create_combobox(self):
         return WhiteCombobox().draw()
@@ -37,7 +37,7 @@ class BlueWidgetFactory(AWidgetFactory):
         return BlueButton().draw()
 
     def create_window(self):
-        return BlueWindow(self.parent).draw_main()
+        BlueMainWindow(self.parent).draw()
 
     def create_combobox(self):
         return BlueCombobox().draw()
