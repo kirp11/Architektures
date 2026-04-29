@@ -1,9 +1,15 @@
 
 import requests
 import json
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
-api_key = '3e9ddc48-02d2-453f-ba1f-f0d071500b95'
+api_key = os.getenv("API_KEY")
+if not api_key:
+    raise ValueError("API_KEY не найден в .env файле")
+
 
 
 class MyAPI:
